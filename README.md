@@ -1,6 +1,8 @@
-# Salesforce Deployment Helper
+# Salesforce Deployment Tool 
 
 Build deployments from a salesforce project and deploy to any org. Requires the [Salesforce Extension Pack](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode).
+
+Initially Salesforce Deployment Helper Thanks to @Greg Lovelidge, This is an update of Greg Project with Salesforce new SF CLI requirement.
 
 ## Features
 
@@ -11,9 +13,14 @@ The following commands are included in the extension:
 Adds a source file or directory to a deployment.
 ![Add to Deployment](images/add-to-deployment.gif)
 
+### Add Multiple files from Context to Deployment
+
+Adds multiple source files or directories from the VS Code explorer to a deployment.
+![Add to Deployment](images/add-to-deployment.gif)
+
 ### Add Multiple Files to Deployment
 
-Adds multiple source files to a deployment.
+Adds multiple source files from OS Explorer to a deployment.
 ![Add Multiple Files to Deployment](images/add-multiple-to-deployment.gif)
 
 ### Remove From Deployment
@@ -40,6 +47,9 @@ Removes all metadata in the deployment.
 
 Requires the latest version of the [Salesforce Extension Pack](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode).
 
+## Bugs and Feedback
+To report issues with Salesforce Deployment Tool, open a bug on GitHub. If you would like to suggest a feature, create a feature request on GitHub.
+
 ## Release Notes
 
 ### 1.0.0
@@ -58,3 +68,8 @@ Initial release of the Salesforce Deployment Helper. Includes the following feat
 -   Added the "Add Multiple Files to Deployment" command.
 -   Fixed issue where entire object was deployed when trying to deploy a single child metadata item (i.e., a custom field)
 -   The deployment command now prompts you to select from a list of authorized environments.
+
+### 2.0.0
+
+-   Upgrading the project specs from SFDX CLI to SF CLI
+-   Added the "Add Multiple files from Context to Deployment" Explorer Menu.

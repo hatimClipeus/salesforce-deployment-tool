@@ -1,103 +1,109 @@
 {
-    "name": "sfdh",
-    "displayName": "Salesforce Deployment Helper",
-    "description": "Easy Salesforce deployments to any environment. Requires the Salesforce Extensions Pack.",
-    "version": "1.1.2",
-    "publisher": "greglovelidge",
-    "repository": {
-        "url": "https://github.com/greg512/salesforce-deployment-helper"
-    },
-    "icon": "images/sfdh-logo.png",
-    "galleryBanner": {
+  "name": "sfdt",
+  "displayName": "Salesforce Deployment Tool",
+  "description": "A VS Code Extension to Deploy Salesforce Metas to any environment. Requires the Salesforce Extensions Pack.",
+  "version": "2.0.0",
+  "publisher": "hatimSF",
+  "icon": "images/sfdt-logo.png",
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "repository": {
+        "url": "https://github.com/greg512/salesforce-deployment-tool"
+  },
+  "galleryBanner": {
         "color": "#ECECEC",
         "theme": "light"
-    },
-    "engines": {
-        "vscode": "^1.46.0"
-    },
-    "license": "SEE LICENSE IN LICENSE.txt",
-    "categories": [
-        "Other"
-    ],
-    "keywords": [
-        "salesforce",
-        "deployments",
-        "change sets",
-        "sfdx",
-        "sfdh"
-    ],
-    "activationEvents": [
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "salesforce",
+    "deployments",
+    "change sets",
+    "sfdx",
+    "sfdt",
+    "salesforce/cli",
+    "tool"
+  ],
+  "activationEvents": [
         "workspaceContains:sfdx-project.json"
     ],
-    "main": "src/index.js",
-    "contributes": {
-        "commands": [
+  "main": "src/index.js",
+  "contributes": {
+    "commands": [
+              {
+                  "command": "sfdt.addToDeployment",
+                  "title": "SFDT: Add to Deployment"
+              },
+              {
+                "command": "sfdt.addAllToDeployment",
+                "title": "SFDT: Add Multiple files from Context to Deployment"
+            },
+              {
+                  "command": "sfdt.addMultipleToDeployment",
+                  "title": "SFDT: Add Multiple Files to Deployment"
+              },
+              {
+                  "command": "sfdt.removeFromDeployment",
+                  "title": "SFDT: Remove From Deployment"
+              },
+              {
+                  "command": "sfdt.deploy",
+                  "title": "SFDT: Deploy to Org"
+              },
+              {
+                  "command": "sfdt.clearDeployment",
+                  "title": "SFDT: Clear Deployment"
+              },
+              {
+                  "command": "sfdt.viewDeployment",
+                  "title": "SFDT: View Metadata in Deployment"
+              }
+    ],
+    "menus": {
+        "explorer/context": [
             {
-                "command": "sfdh.addToDeployment",
-                "title": "SFDH: Add to Deployment"
+                "command": "sfdt.addToDeployment",
+                "when": "resourceLangId != 'forcesourcemanifest'"
+            }, 
+            {
+              "command": "sfdt.addAllToDeployment",
+              "when": "resourceLangId != 'forcesourcemanifest'"
             },
             {
-                "command": "sfdh.addMultipleToDeployment",
-                "title": "SFDH: Add Multiple Files to Deployment"
-            },
-            {
-                "command": "sfdh.removeFromDeployment",
-                "title": "SFDH: Remove From Deployment"
-            },
-            {
-                "command": "sfdh.deploy",
-                "title": "SFDH: Deploy to Org"
-            },
-            {
-                "command": "sfdh.clearDeployment",
-                "title": "SFDH: Clear Deployment"
-            },
-            {
-                "command": "sfdh.viewDeployment",
-                "title": "SFDH: View Metadata in Deployment"
+                "command": "sfdt.removeFromDeployment",
+                "when": "resourceLangId != 'forcesourcemanifest'"
             }
         ],
-        "menus": {
-            "explorer/context": [
-                {
-                    "command": "sfdh.addToDeployment",
-                    "when": "resourceLangId != 'forcesourcemanifest'"
-                },
-                {
-                    "command": "sfdh.removeFromDeployment",
-                    "when": "resourceLangId != 'forcesourcemanifest'"
-                }
-            ],
-            "commandPalette": [
-                {
-                    "command": "sfdh.deploy",
-                    "when": "sfdh:project_opened"
-                },
-                {
-                    "command": "sfdh.clearDeployment",
-                    "when": "sfdh:project_opened"
-                },
-                {
-                    "command": "sfdh.viewDeployment",
-                    "when": "sfdh:project_opened"
-                }
-            ]
-        }
-    },
-    "scripts": {
-        "lint": "eslint .",
-        "pretest": "npm run lint",
-        "test": "node ./test/runTest.js"
-    },
-    "devDependencies": {
-        "@types/vscode": "^1.46.0",
-        "@types/glob": "^7.1.1",
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^13.11.0",
-        "eslint": "^6.8.0",
-        "glob": "^7.1.6",
-        "mocha": "^7.1.2",
-        "typescript": "^3.8.3",
-        "vscode-test": "^1.3.0"
+        "commandPalette": [
+            {
+                "command": "sfdt.deploy",
+                "when": "sfdt:project_opened"
+            },
+            {
+                "command": "sfdt.clearDeployment",
+                "when": "sfdt:project_opened"
+            },
+            {
+                "command": "sfdt.viewDeployment",
+                "when": "sfdt:project_opened"
+            }
+        ]
     }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.97.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "eslint": "^9.19.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
 }

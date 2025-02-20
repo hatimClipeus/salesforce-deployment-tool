@@ -1,5 +1,5 @@
 /**
- *    Copyright 2020 Greg Lovelidge
+ *    Copyright 2025
 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ module.exports = (context) => {
                 resolve(metadataInfoByFolderName);
                 return;
             }
-            const sfdx = exec.spawn('sfdx', ['force:mdapi:describemetadata', '--json'], {
+            const sfdx = exec.spawn('sf', ['org list metadata-types', '--json'], {
                 cwd: vscode.workspace.workspaceFolders[0].uri.fsPath,
                 shell: true
             });

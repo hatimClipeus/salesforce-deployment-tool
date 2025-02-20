@@ -1,5 +1,5 @@
 /**
- *    Copyright 2020 Greg Lovelidge
+ *    Copyright 2025
 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,25 +15,55 @@
  */
 const vscode = require('vscode');
 const viewDeployment = require('./viewDeployment');
-module.exports = (sourceUri, context, outputChannel) => {
-    const splitPath = sourceUri.path.split('/');
-    const metadataInfoByFolderName = context.workspaceState.get('metadataInfoByFolderName');
-    const deploymentMetadataByXmlName = context.workspaceState.get('deploymentMetadataByXmlName') || {};
-    // the directory name is the last item
-    let directoryName = splitPath[splitPath.length - 1];
-    if (!metadataInfoByFolderName[directoryName]) {
-        // if it's still not valid, throw an error
-        vscode.window.showErrorMessage(
-            `Error! Unable to match the selected metadata to a valid metadata type: ${sourceUri.path}`
+const { getMetadataInfoFromPath, getMetadataInfo, getPathForDeployment } = require('../util');
+const path = require('path');
+module.exports = async (sourceUris, context, outputChannel) => {
+    const metadataInfoByFolderName = await getMetadataInfo(context);
+    const deploymentMetadata = context.workspaceState.get('deploymentMetadata') || [];
+    const newMetadata = [];
+    sourceUris.forEach((sourceUri) => {
+        // check if this metadata is already in the deployment
+        const alreadyInDeployment = deploymentMetadata.some((md) => md.fsPath === sourceUri.fsPath);
+        if (alreadyInDeployment) return;
+        const { metadataName, directoryName, isMetadataFolder, xmlName } = getMetadataInfoFromPath(
+            sourceUri,
+            metadataInfoByFolderName
         );
-        return;
-    }
 
-    const metadataInfo = metadataInfoByFolderName[directoryName];
-    const xmlName = metadataInfo.xmlName;
-    // add to the package
-    deploymentMetadataByXmlName[xmlName] = '*';
-    context.workspaceState.update('deploymentMetadataByXmlName', deploymentMetadataByXmlName);
-    vscode.window.showInformationMessage(`Added all ${xmlName} to the deployment.`);
-    viewDeployment(context, outputChannel);
+        // if it's still not valid, show a warning message
+        if (!metadataName) {
+            vscode.window.showWarningMessage(
+                `Warning: Unable to match the "${sourceUri.fsPath}" to a valid metadata type.`
+            );
+            return;
+        }
+
+        // check if deployment already included or if all are selected
+        if (!isMetadataFolder) {
+            const includesAllMetadata = deploymentMetadata.some((md) => md.xmlName === xmlName && md.isMetadataFolder);
+            if (includesAllMetadata) {
+                vscode.window.showWarningMessage(
+                    `The deployment already includes all ${directoryName} metadata. Remove the folder first if you want to only deploy ${metadataName}.`
+                );
+                return;
+            }
+        }
+
+        let fsPath = getPathForDeployment(sourceUri.fsPath, isMetadataFolder, directoryName, metadataName);
+        const splitPath = fsPath.split(path.sep);
+        const metadataStartIndex = splitPath.indexOf(directoryName);
+        newMetadata.push({
+            fsPath,
+            isMetadataFolder,
+            metadataName,
+            xmlName,
+            splitPath: splitPath.slice(metadataStartIndex)
+        });
+    });
+    if (newMetadata.length > 0) {
+        deploymentMetadata.push(...newMetadata);
+        context.workspaceState.update('deploymentMetadata', deploymentMetadata);
+        viewDeployment(context, outputChannel);
+        vscode.window.showInformationMessage(`Finished adding metadata to the deployment.`);
+    }
 };

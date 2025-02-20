@@ -1,5 +1,5 @@
 /**
- *    Copyright 2020 Greg Lovelidge
+ *    Copyright 2025
 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ module.exports = async (context, outputChannel) => {
             (progress, token) => {
                 return new Promise((resolve) => {
                     // execute the deploy command
-                    const sfdx = exec.spawn('sfdx', cmdArguments, {
+                    const sfdx = exec.spawn('sf', cmdArguments, {
                         cwd: vscode.workspace.workspaceFolders[0].uri.fsPath,
                         shell: true
                     });
@@ -88,7 +88,7 @@ module.exports = async (context, outputChannel) => {
 
 async function getDeployCmdArguments(deploymentMetadata) {
     // base arguments for the command
-    const cmdArguments = ['force:source:deploy', '--json', '--loglevel', 'fatal'];
+    const cmdArguments = ['project deploy start', '--json', ''];
 
     const aliasOptions = [];
 
@@ -125,13 +125,13 @@ async function getDeployCmdArguments(deploymentMetadata) {
     });
 
     // add the user defined params
-    cmdArguments.push('-p', `"${deploymentMetadata.map((md) => md.fsPath).join(',')}"`);
-    cmdArguments.push('-l', testLevel);
+    cmdArguments.push('-d', `"${deploymentMetadata.map((md) => md.fsPath).join('" "')}"`);
+    cmdArguments.push('--test-level', testLevel);
     if (checkOnly === YES) {
-        cmdArguments.push('-c');
+        cmdArguments.push('--dry-run');
     }
     if ((targetUsername || '').length > 0) {
-        cmdArguments.push('-u', targetUsername);
+        cmdArguments.push('--target-org', targetUsername);
     }
     return cmdArguments;
 }

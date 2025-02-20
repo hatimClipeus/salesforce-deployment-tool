@@ -1,5 +1,5 @@
 /**
- *    Copyright 2020 Greg Lovelidge
+ *    Copyright 2025
 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ const vscode = require('vscode');
 module.exports = (token) => {
     try {
         return new Promise((resolve, reject) => {
-            const sfdx = exec.spawn('sfdx', ['force:org:list', '--json'], {
+            const sfdx = exec.spawn('sf', ['org list', '--json'], {
                 cwd: vscode.workspace.workspaceFolders[0].uri.fsPath,
                 shell: true
             });
