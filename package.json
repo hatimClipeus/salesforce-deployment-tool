@@ -9,7 +9,7 @@
     "vscode": "^1.97.0"
   },
   "repository": {
-        "url": "https://github.com/greg512/salesforce-deployment-tool"
+        "url": "https://github.com/hatimClipeus/salesforce-deployment-tool.git"
   },
   "galleryBanner": {
         "color": "#ECECEC",

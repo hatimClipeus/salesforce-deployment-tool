@@ -16,7 +16,7 @@ Adds a source file or directory to a deployment.
 ### Add Multiple files from Context to Deployment
 
 Adds multiple source files or directories from the VS Code explorer to a deployment.
-![Add to Deployment](images/add-to-deployment.gif)
+![Add to Deployment](images/add-all-to-deployment.gif)
 
 ### Add Multiple Files to Deployment
 
